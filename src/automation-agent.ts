@@ -16,14 +16,12 @@ export class AutomationAgent {
       output: process.stdout
     });
 
-    // Define tools for the agent
     const takeScreenshot = tool({
       name: 'take_screenshot',
       description: 'Takes a screenshot of the current page and returns a compressed base64 image',
       parameters: z.object({}),
       execute: async () => {
         const screenshot = await this.browserManager.takeScreenshot();
-        // Return a summary instead of full image to avoid context window issues
         return 'Screenshot taken successfully. Page is visible and ready for interaction.';
       }
     });
@@ -106,7 +104,7 @@ export class AutomationAgent {
                 resolve(trimmedAnswer);
               } else {
                 console.log('⚠️  Please enter a valid response.');
-                askQuestion(); // Ask again if empty
+                askQuestion();
               }
             });
           };
@@ -133,7 +131,6 @@ export class AutomationAgent {
       }),
       execute: async (input) => {
         try {
-          // Try different selectors for the tweet compose button
           const composeSelectors = [
             '[data-testid="SideNav_NewTweet_Button"]',
             '[aria-label="Tweet"]',
@@ -149,7 +146,7 @@ export class AutomationAgent {
               clicked = true;
               break;
             } catch (e) {
-              // Try next selector
+              // Next error steps
             }
           }
 
@@ -157,10 +154,8 @@ export class AutomationAgent {
             return 'Could not find tweet compose button. Please make sure you are logged in to Twitter.';
           }
 
-          // Wait a moment for the compose dialog to open
           await new Promise(resolve => setTimeout(resolve, 1000));
 
-          // Try different selectors for the tweet text area
           const textAreaSelectors = [
             '[data-testid="tweetTextarea_0"]',
             '[role="textbox"][aria-label*="Tweet"]',
@@ -176,7 +171,7 @@ export class AutomationAgent {
               typed = true;
               break;
             } catch (e) {
-              // Try next selector
+              // Next error steps
             }
           }
 
@@ -209,7 +204,7 @@ export class AutomationAgent {
               await this.browserManager.clickElement(selector);
               return 'Tweet posted successfully!';
             } catch (e) {
-              // Try next selector
+              // Next error steps
             }
           }
 
@@ -220,7 +215,6 @@ export class AutomationAgent {
       }
     });
 
-    // Create the automation agent
     this.agent = new Agent({
       name: 'Browser Automation Agent',
       model: 'gpt-4o-mini',
@@ -245,7 +239,7 @@ export class AutomationAgent {
         3. For EACH field, ask the user for input ONE AT A TIME
         4. IMMEDIATELY after getting user input, fill that specific field
         5. Move to the next field only after the previous one is filled
-        6. After all fields are filled, ask user if they want to submit
+        6. After all fields are filled, submit the form
         
         For Twitter/social media tasks:
         1. Open Twitter using the open_twitter tool
@@ -274,12 +268,20 @@ export class AutomationAgent {
     try {
       const result = await run(this.agent, [
         { role: 'user', content: task }
-      ]);
+      ], {
+        maxTurns: 25
+      });
 
       console.log('\n✅ Task completed successfully!');
       console.log('Final response:', result.finalOutput);
     } catch (error) {
-      console.error('❌ Error executing task:', error);
+      if (error && typeof error === 'object' && 'name' in error && error.name === 'MaxTurnsExceededError') {
+        console.error('❌ The task exceeded the maximum number of turns (25).');
+        console.error('💡 This usually happens with very complex forms. Try breaking the task into smaller parts.');
+        console.error('📝 You can also try submitting the form manually after the agent has filled the available fields.');
+      } else {
+        console.error('❌ Error executing task:', error);
+      }
     }
   }
 

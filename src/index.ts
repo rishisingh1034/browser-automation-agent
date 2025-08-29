@@ -7,11 +7,9 @@ import { AutomationTask } from './types.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// In-memory storage for tasks (in production, use a database)
 const tasks: Map<string, AutomationTask> = new Map();
 
 // Routes
@@ -30,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.post('/tasks', (req, res) => {
   const { url, description } = req.body;
-  
+
   if (!url || !description) {
     return res.status(400).json({
       error: 'URL and description are required'
@@ -47,7 +45,7 @@ app.post('/tasks', (req, res) => {
   };
 
   tasks.set(task.id, task);
-  
+
   res.status(201).json(task);
 });
 
@@ -58,19 +56,19 @@ app.get('/tasks', (req, res) => {
 
 app.get('/tasks/:id', (req, res) => {
   const task = tasks.get(req.params.id);
-  
+
   if (!task) {
     return res.status(404).json({
       error: 'Task not found'
     });
   }
-  
+
   res.json(task);
 });
 
 app.post('/tasks/:id/execute', async (req, res) => {
   const task = tasks.get(req.params.id);
-  
+
   if (!task) {
     return res.status(404).json({
       error: 'Task not found'
@@ -92,21 +90,20 @@ app.post('/tasks/:id/execute', async (req, res) => {
     task
   });
 
-  // Execute the task asynchronously
   try {
     const agent = new AutomationAgent();
     await agent.initialize();
-    
+
     const taskDescription = `Navigate to ${task.url} and ${task.description}`;
     await agent.executeTask(taskDescription);
-    
+
     task.status = 'completed';
     await agent.close();
   } catch (error) {
     console.error('Task execution failed:', error);
     task.status = 'failed';
   }
-  
+
   tasks.set(task.id, task);
 });
 

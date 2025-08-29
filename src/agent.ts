@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import 'dotenv/config';
 import { AutomationAgent } from './automation-agent.js';
 import readline from 'readline';
@@ -14,12 +13,11 @@ async function main() {
   });
 
   const agent = new AutomationAgent();
-  
+
   try {
     await agent.initialize();
     console.log('✅ Browser initialized successfully!\n');
 
-    // Get task from user
     console.log('Enter your automation task (e.g., "Fill the form at https://example.com"):');
     rl.question('> ', async (task) => {
       if (!task.trim()) {
@@ -48,7 +46,6 @@ async function main() {
   }
 }
 
-// Handle graceful shutdown
 process.on('SIGINT', async () => {
   console.log('\n👋 Shutting down gracefully...');
   process.exit(0);

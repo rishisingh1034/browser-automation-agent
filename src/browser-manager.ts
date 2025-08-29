@@ -61,26 +61,20 @@ export class BrowserManager {
     }
 
     try {
-      // Wait for the element to be available
       await this.page.waitForSelector(selector, { timeout: 10000 });
-      
-      // Focus on the element
       await this.page.focus(selector);
-      
-      // Clear the field first
+
       await this.page.keyboard.press('Control+a');
       await this.page.keyboard.press('Delete');
-      
-      // Type the text
+
       await this.page.keyboard.type(text, { delay: 50 });
-      
-      // Verify the text was entered
-      const value = await this.page.inputValue(selector).catch(() => 
+
+      const value = await this.page.inputValue(selector).catch(() =>
         this.page?.textContent(selector) || ''
       );
-      
+
       console.log(`✅ Successfully typed "${text}" into field (current value: "${value || 'unknown'}")`);
-      
+
     } catch (error) {
       console.error(`❌ Failed to type into selector "${selector}":`, error instanceof Error ? error.message : String(error));
       throw error;
