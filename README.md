@@ -1,190 +1,272 @@
-# Browser Automation Agent
+# 🤖 Browser Automation Agent
 
-A powerful AI-driven browser automation agent that can fill out forms, interact with web pages, post on social media, and perform various web tasks using natural language commands.
+> **Watch the Demo**: [YouTube Video](https://youtu.be/6kzdiYDvqCQ)
 
-## Features
+A powerful AI-driven browser automation agent that intelligently fills out forms, interacts with web pages, posts on social media, and performs complex web tasks using natural language commands. Built with OpenAI's latest Agent SDK and Playwright for reliable browser automation.
 
-- 🤖 AI-powered web automation using OpenAI's GPT models
-- 🌐 Form filling and web interaction
-- 🐦 **NEW**: Twitter/X posting functionality
-- 📸 Optimized screenshot handling (context window friendly)
-- 🎯 Element detection and interaction
-- 🔧 RESTful API for integration
-- 💻 Improved command-line interface
-- 🌍 Chrome browser support with realistic user agent prompts
-- 📸 Screenshot capabilities for visual feedback
-- 🔧 TypeScript for type safety
-- 🎭 Playwright for browser automation
+## ✨ Key Features
 
-## Prerequisites
+### 🎯 **Intelligent Form Filling**
 
-- Node.js 18+ 
-- OpenAI API key
+- Automatically detects form fields on any website
+- Asks users for input one field at a time for accuracy
+- Handles complex multi-step forms with validation
+- Supports various input types (text, email, select, checkboxes)
 
-## Setup
+### 🐦 **Social Media Automation**
 
-1. **Install dependencies:**
+- **Twitter/X Integration**: Post tweets with intelligent element detection
+- Multiple selector fallbacks for reliability
+- Handles dynamic content loading
+
+### 🧠 **AI-Powered Interactions**
+
+- Uses OpenAI's GPT-4 models for intelligent decision making
+- Natural language command processing
+- Context-aware element selection
+- Smart error recovery and retry mechanisms
+
+### 🛠️ **Advanced Browser Control**
+
+- Screenshot capabilities for visual feedback
+- Coordinate-based clicking for complex elements
+- CSS selector and XPath support
+- Realistic user agent simulation
+- Chrome browser automation via Playwright
+
+### 🔧 **Developer-Friendly**
+
+- TypeScript for type safety and better development experience
+- RESTful API for integration with other applications
+- Comprehensive error handling and logging
+- Configurable turn limits for complex tasks
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js 18+** - [Download here](https://nodejs.org/)
+- **OpenAI API Key** - [Get one here](https://platform.openai.com/api-keys)
+
+### 📦 Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/rishisingh1034/browser-automation-agent.git
+   cd browser-automation-agent
+   ```
+
+2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
-2. **Set up environment variables:**
+3. **Set up environment variables:**
+
    ```bash
    cp .env.example .env
-   # Edit .env and add your OpenAI API key
    ```
 
-3. **Build the project:**
+   Edit `.env` file and add your OpenAI API key:
+
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+4. **Build the project:**
+
    ```bash
    npm run build
    ```
 
-## Usage
+5. **Install browser dependencies:**
+   ```bash
+   npx playwright install chromium
+   ```
 
-### CLI Mode (Recommended)
+## 🎮 Usage
 
-Run the agent directly from the command line:
+### 🖥️ CLI Mode (Recommended)
+
+Start the interactive agent:
 
 ```bash
 npm run agent
 ```
 
-Example usage:
+**Example Commands:**
+
+- `"Fill out the contact form on https://example.com"`
+- `"Post a tweet saying 'Hello from my automation agent!'"`
+- `"Navigate to LinkedIn and take a screenshot"`
+
+### 🌐 API Mode
+
+Start the REST API server:
+
+```bash
+npm start
 ```
-# Form filling
-Enter your automation task: Fill the form at https://example.com
 
-# Twitter posting
-Enter your automation task: Post a tweet saying "Hello from my automation agent!"
+The API will be available at `http://localhost:3000`
 
-# General web tasks
-Enter your automation task: Navigate to https://github.com and search for "browser automation"
+**API Endpoints:**
+
+- `POST /automate` - Execute automation tasks
+- `GET /health` - Health check
+
+**Example API Request:**
+
+```bash
+curl -X POST http://localhost:3000/automate \
+  -H "Content-Type: application/json" \
+  -d '{"task": "Fill out the form on https://example.com"}'
 ```
 
-The agent will:
-1. Navigate to the specified URL
-2. Analyze the form fields or page elements
-3. Ask you for required information (name, email, phone, tweet content, etc.)
-4. Fill out forms or perform actions automatically
-5. Provide confirmation of completed tasks
+## 🎯 How It Works
 
-### API Server Mode
+### 1. **Form Filling Workflow**
 
-Start the Express server:
+```
+1. Navigate to target URL
+2. Analyze page structure and detect form fields
+3. Ask user for input one field at a time
+4. Fill each field immediately after receiving input
+5. Confirm before submission
+```
+
+### 2. **Twitter Posting Workflow**
+
+```
+1. Open Twitter/X.com
+2. Find and click compose button
+3. Enter tweet content
+4. Click tweet button to post
+```
+
+### 3. **Error Recovery**
+
+- Multiple selector fallbacks for reliability
+- Automatic retries for failed operations
+- Intelligent wait conditions for dynamic content
+- Graceful handling of rate limits and API errors
+
+## 🛠️ Available Tools
+
+The agent has access to these powerful tools:
+
+| Tool                 | Description                   | Use Case                      |
+| -------------------- | ----------------------------- | ----------------------------- |
+| `take_screenshot`    | Captures page screenshots     | Visual feedback and debugging |
+| `navigate_to_url`    | Navigate to any URL           | Opening websites              |
+| `click_element`      | Click using CSS selectors     | Button clicks, links          |
+| `click_coordinates`  | Click at specific coordinates | Complex UI elements           |
+| `type_text`          | Type text into input fields   | Form filling                  |
+| `get_form_fields`    | Analyze form structure        | Understanding page layout     |
+| `ask_user_for_input` | Interactive user prompts      | Collecting user data          |
+| `open_twitter`       | Quick Twitter navigation      | Social media tasks            |
+| `post_tweet`         | Compose and post tweets       | Twitter automation            |
+| `click_tweet_button` | Submit tweets                 | Finalizing posts              |
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+```env
+# Required
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Optional
+PORT=3000
+DEBUG=false
+```
+
+### Agent Settings
+
+- **Model**: `gpt-4o-mini` (optimal performance/cost ratio)
+- **Max Turns**: `25` (handles complex multi-step tasks)
+- **Browser**: Chromium with realistic user agent
+- **Timeout**: `30 seconds` for page loads
+- **Screenshots**: Optimized for context window efficiency
+
+## 🔧 Development
+
+### Development Mode
 
 ```bash
 npm run dev
 ```
 
-The server will run on `http://localhost:3000`
+### Debug Mode
 
-#### API Endpoints
-
-- `GET /` - API documentation
-- `POST /tasks` - Create a new automation task
-- `GET /tasks` - Get all tasks
-- `GET /tasks/:id` - Get a specific task
-- `POST /tasks/:id/execute` - Execute a task
-
-#### Example API Usage
-
-Create a task:
 ```bash
-curl -X POST http://localhost:3000/tasks \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://example.com/contact",
-    "description": "fill the contact form"
-  }'
+DEBUG=* npm run agent
 ```
 
-Execute a task:
+### Build for Production
+
 ```bash
-curl -X POST http://localhost:3000/tasks/1/execute
+npm run build
+npm start
 ```
 
-## How It Works
+## 🚨 Troubleshooting
 
-The agent uses OpenAI's function calling capabilities combined with Playwright browser automation:
+### Common Issues
 
-1. **Navigation**: Opens the target URL in a browser
-2. **Analysis**: Takes screenshots and analyzes the page structure
-3. **Form Detection**: Identifies form fields and their requirements
-4. **User Interaction**: Prompts you for the necessary information
-5. **Automation**: Fills out the form automatically
-6. **Verification**: Takes final screenshots to confirm completion
+| Error                   | Cause                        | Solution                     |
+| ----------------------- | ---------------------------- | ---------------------------- |
+| `MaxTurnsExceededError` | Task too complex (>25 steps) | Break into smaller tasks     |
+| `Element not found`     | Page still loading           | Agent retries automatically  |
+| `OpenAI API Error`      | Invalid/expired API key      | Check API key and credits    |
+| `Browser launch failed` | Missing Playwright browsers  | Run `npx playwright install` |
 
-## Agent Tools
+### Performance Tips
 
-The AI agent has access to these tools:
+- Use specific CSS selectors when possible
+- Break complex forms into smaller sections
+- Ensure stable internet connection for API calls
+- Monitor OpenAI API usage and rate limits
 
-- `take_screenshot` - Captures the current page state (optimized for context window)
-- `navigate_to_url` - Navigates to a specific URL
-- `click_element` - Clicks on elements using CSS selectors (with wait conditions)
-- `click_coordinates` - Clicks on specific screen coordinates
-- `type_text` - Types text into input fields (improved clearing and typing)
-- `get_form_fields` - Analyzes form fields on the page
-- `ask_user_for_input` - Prompts user for information via CLI
-- `open_twitter` - **NEW**: Opens Twitter/X.com
-- `post_tweet` - **NEW**: Composes and enters tweet content
-- `click_tweet_button` - **NEW**: Posts the tweet
+## 📈 Recent Updates
 
-## Example Tasks
+### v1.0.0 (Latest)
 
-### Form Filling
-- "Fill the contact form at https://example.com"
-- "Submit a job application at https://company.com/careers"
-- "Register an account at https://website.com/signup"
-- "Fill out the survey at https://forms.google.com/..."
+- ✅ **Fixed MaxTurnsExceededError**: Increased turn limit to 25
+- ✅ **Enhanced Twitter Integration**: Multiple selector fallbacks
+- ✅ **Improved Error Handling**: Better user guidance
+- ✅ **TypeScript Support**: Full type safety
+- ✅ **Optimized Screenshots**: Context window friendly
 
-### Social Media
-- "Post a tweet saying 'Hello from my automation agent!'"
-- "Tweet about my latest project"
-- "Share a motivational quote on Twitter"
+## 🤝 Contributing
 
-### General Web Tasks
-- "Navigate to GitHub and search for browser automation"
-- "Go to Amazon and search for laptops"
-- "Open YouTube and search for coding tutorials"
+We welcome contributions! Here's how to get started:
 
-## Configuration
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-### Environment Variables
+### Development Guidelines
 
-- `OPENAI_API_KEY` - Your OpenAI API key (required)
-- `PORT` - Server port (default: 3000)
+- Follow TypeScript best practices
+- Add tests for new features
+- Update documentation
+- Ensure backward compatibility
 
-### Browser Settings
+## 📄 License
 
-The browser runs in non-headless mode by default so you can see the automation in action. To run headless, modify the `BrowserManager` class.
+ISC License - see [LICENSE](LICENSE) file for details.
 
-## Recent Fixes & Improvements
+## 🙏 Acknowledgments
 
-### ✅ Fixed Issues
-- **Context Window Error (400)**: Optimized screenshot handling to prevent OpenAI API context window overflow
-- **Duplicate Text Input**: Fixed readline interface configuration to prevent text echoing
-- **Browser Compatibility**: Enhanced Chrome support with proper user agent and launch arguments
+- [OpenAI](https://openai.com/) for the powerful Agent SDK
+- [Playwright](https://playwright.dev/) for reliable browser automation
+- [TypeScript](https://www.typescriptlang.org/) for type safety
 
-### 🆕 New Features
-- **Twitter Integration**: Full Twitter/X posting functionality with multiple selector fallbacks
-- **Improved Element Detection**: Enhanced click and type operations with wait conditions
-- **Better Error Handling**: More robust error messages and fallback mechanisms
+---
 
-## Troubleshooting
-
-1. **OpenAI API Key**: Make sure your API key is valid and has sufficient credits
-2. **Browser Issues**: Ensure you have the latest version of Playwright browsers installed
-3. **Form Detection**: Some complex forms may require manual selector specification
-4. **Context Window Errors**: Screenshots are now optimized to prevent API limits
-5. **Twitter Login**: Make sure you're logged into Twitter/X before attempting to post tweets
-
-## Security Notes
-
-- Never hardcode API keys in your code
-- Be cautious when automating sensitive forms
-- Always verify the target website's terms of service
-- Use responsibly and respect rate limits
-
-## Contributing
-
-Feel free to submit issues and enhancement requests!
+**⭐ If this project helped you, please give it a star on GitHub!**
